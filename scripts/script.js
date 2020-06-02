@@ -1,6 +1,7 @@
 $(document).ready(() => {
     $('#table-moves').hide();
     $('#btn-parse').click(() => {
+        $('#tbody-moves tr').remove();
         $('#table-moves').show();
         fillTable();
     });
