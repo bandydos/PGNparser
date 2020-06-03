@@ -10,10 +10,10 @@ $(document).ready(() => {
 function parsedMoves() {
     const full = $('#input-pgn').val();
     const moves = full.substring(full.lastIndexOf(']') + 1);
-    const splitted = moves.split(/\s/);
     const reg = /[0-9]+\./;
+    const splitted = moves.split(reg);
     const filtered = splitted.filter((x) => {
-        return !reg.test(x) && x; // Filter out by regex + empty strings.
+        return x; // Filter out empty strings.
     });
     return filtered;
 }
