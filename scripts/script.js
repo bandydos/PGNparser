@@ -5,8 +5,7 @@ $(document).ready(() => {
         inputFile.click();
     })
     inputFile.addEventListener('change', () => {
-        const data = readFile(inputFile);
-        console.log(data);
+        readFile(inputFile, getFileData);
     })
     $('#btn-parse').click(() => {
         $('#tbody-moves tr').remove();
@@ -16,11 +15,10 @@ $(document).ready(() => {
 
 });
 
-function cb() {
-    console.log('ham')
+function getFileData(result) {
+    console.log(result);
+    console.log(fillDetails(result));
 }
-
-readFile()
 
 function readFile(input, callback) {
     let file = input.files[0];
@@ -36,8 +34,6 @@ function readFile(input, callback) {
     reader.onerror = () => {
         pgnData = reader.error;
     };
-
-    return pgnData;
 }
 
 // Parse PGN text to array of moves.
