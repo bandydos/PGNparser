@@ -19,16 +19,26 @@
     </div>
     <div class="container">
         <div class="row mt-5">
-            <div class="col-12">
+            <div class="col-8">
                 <label>Input PGN</label>
+            </div>
+            <div class="col-4">
+                <label>Select file</label>
             </div>
         </div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-6">
                 <input id="input-pgn" class="form-control" type="text">
             </div>
-            <div class="col-4 text-center">
-                <button id="btn-parse" class="btn btn-primary">PARSE</button>
+            <div class="col-2 text-center">
+                <h4>OR</h4>
+            </div>
+            <div class="col-2">
+                <input id="input-file" class="d-none" type="file" accept="pgn">
+                <button id="btn-open" class="btn btn-primary form-control">OPEN PGN</button>
+              </div>
+            <div class="col-2">
+                <button id="btn-parse" class="btn btn-primary float-right">PARSE</button>
             </div>
         </div>
         <div class="row mt-5">

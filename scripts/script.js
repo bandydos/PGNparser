@@ -1,12 +1,44 @@
 $(document).ready(() => {
     $('#table-moves').hide();
+    const inputFile = document.getElementById('input-file');
+    $('#btn-open').click(() => {
+        inputFile.click();
+    })
+    inputFile.addEventListener('change', () => {
+        const data = readFile(inputFile);
+        console.log(data);
+    })
     $('#btn-parse').click(() => {
         $('#tbody-moves tr').remove();
         $('#table-moves').show();
         fillTable();
-        console.log(parsedSeperateMoves());
     });
+
 });
+
+function cb() {
+    console.log('ham')
+}
+
+readFile()
+
+function readFile(input, callback) {
+    let file = input.files[0];
+    let reader = new FileReader();
+    let pgnData;
+
+    reader.readAsText(file);
+
+    reader.onload = () => {
+        callback(reader.result)
+        pgnData = reader.result;
+    };
+    reader.onerror = () => {
+        pgnData = reader.error;
+    };
+
+    return pgnData;
+}
 
 // Parse PGN text to array of moves.
 function parsedFullMoves() {
@@ -73,6 +105,8 @@ function isValid() {
     return valid;
 }
 
+
+
 function fillTable() {
     const moves = parsedSeperateMoves();
     const valid = isValid();
@@ -87,3 +121,60 @@ function fillTable() {
         $('#h4-message').text('Something went wrong, check input please.');
     }
 }
+
+class GameDetails {
+    constructor(white, black, date, result, whiteelo, blackelo, moves) {
+        this.white = white;
+        this.black = black;
+        this.date = date;
+        this.result = result;
+        this.whiteelo = whiteelo;
+        this.blackelo = blackelo;
+        this.moves = moves;
+    }
+}
+
+
+
+const getDetailsList = () => {
+    const full = $('#input-pgn').val();
+    const regSplit = /\]\s*\[/;
+    const details = full.substring(full.indexOf('[') + 1, full.lastIndexOf(']'))
+    const splitted = details.split(regSplit);
+    return splitted;
+}
+
+
+function findProp(prop) {
+    let det = getDetailsList();
+
+    let fullProps = [];
+    for (let i = 0; i < det.length; i++) {
+        fullProps.push([det[i].substring(0, det[i].indexOf('"')),
+        det[i].substring(det[i].indexOf('"') + 1, det[i].lastIndexOf('"'))]);
+    }
+
+    let propDetail;
+    for (let i = 0; i < fullProps.length; i++) {
+        for (let j = 0; j < fullProps[i].length; j++) {
+            fullProps[i][j] = fullProps[i][j].trim()
+            fullProps[i][0] = fullProps[i][0].toLowerCase()
+        }
+        if (fullProps[i][0] == prop) {
+            propDetail = fullProps[i][1];
+        }
+    }
+    return propDetail;
+}
+
+function fillDetails() {
+    let details = new GameDetails;
+    for (let property in details) {
+        details[property] = findProp(property);
+    }
+    details.moves = parsedSeperateMoves();
+    return details
+}
+
+// Idee voor uitbreiding mobiele applicatie => scanner implementeren.
+
